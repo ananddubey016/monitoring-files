@@ -1,0 +1,34 @@
+groups:
+  - name: recording_rules
+    interval: 5s
+    rules:
+      - record: node_exporter:node_filesystem_free:fs_used_percents
+        expr: 100 - 100 * ( node_filesystem_free{mountpoint="/"} / node_filesystem_size{mountpoint="/"} )
+
+      - record: node_exporter:node_memory_free:memory_used_percents
+        expr: 100 - 100 * (node_memory_MemFree / node_memory_MemTotal)
+  
+  - name: Alerts
+    rules:
+    # Alert for any instance that is unreachable for >5 minutes.
+    - alert: InstanceDown
+      expr: up == 0
+      for: 5s
+  
+  - name: For_Slack
+    rules:
+    - alert: NetdataHighCpuUsage
+      expr: rate(netdata_cpu_cpu_percentage_average{dimension="idle"}[1m]) > 80
+      for: 5s
+      labels:
+        severity: warning
+      annotations:
+        summary: Netdata high cpu usage (instance {{ $labels.instance }})
+        description: "Netdata high CPU usage (> 80%)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    #memory 
+
+    #disk 
+    
+    # - alert: Custom alert
+    #   expr: 100 - (avg by (instance) (netdata_cpu_cpu_percentage_average{dimension="idle"}))
