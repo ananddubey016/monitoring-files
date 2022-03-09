@@ -1,22 +1,12 @@
 global:
   resolve_timeout: 1m
-  # slack_api_url: 'https://hooks.slack.com/services/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'
-  slack_api_url: 'https://hooks.slack.com/services/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'
+  slack_api_url: 'slack api url'
 
 route:
   # receiver: 'gmail-notifications'
   receiver: 'slack-notifications'
 
 receivers:
-# - name: 'gmail-notifications'
-#   email_configs:
-#   - to: ananddubey016@gmail.com
-#     from: ananddubey016@gmail.com
-#     smarthost: smtp.gmail.com:587
-#     auth_username: ananddubey016@gmail.com
-#     auth_identity: ananddubey016@gmail.com
-#     auth_password: 
-#     send_resolved: true
 
 - name: 'slack-notifications'
   slack_configs:
